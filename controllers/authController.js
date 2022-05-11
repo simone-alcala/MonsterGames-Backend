@@ -1,4 +1,6 @@
+import dotenv from 'dotenv';
 import bcrypt from  'bcrypt';
+import jwt from 'jsonwebtoken';
 
 import db from './../db.js';
 
@@ -26,6 +28,21 @@ export async function signUp (req,res){
 
     return res.sendStatus(201);
 
+  } catch (e) {
+    console.log(e);
+    return res.sendStatus(500);
+  }
+}
+
+export async function signIn(req,res){
+  const {password} = req.body;
+  const {userId, name} = res.locals;
+
+  const token = jwt.sign(password, process.env.JWT_KEY);
+
+  try {
+    await db.collection('sessions').insertOne({userId, token})
+    return res.status(200).send({token, name})
   } catch (e) {
     console.log(e);
     return res.sendStatus(500);
