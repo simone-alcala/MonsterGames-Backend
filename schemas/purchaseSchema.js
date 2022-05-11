@@ -33,7 +33,7 @@ export function schemaProductInfo (req,res,next){
   const {products} = req.body;
 
   const schema = joi.object({
-    _id:  joi.string().trim().length(24).required(),
+    productId:  joi.string().trim().length(24).required(),
     name: joi.string().trim().required(),
     image:joi.string().pattern(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/),
     price:joi.number().positive().precision(2).required(),

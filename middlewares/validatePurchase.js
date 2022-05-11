@@ -11,8 +11,8 @@ export async function validatePurchase (req,res,next) {
     let totalPrice = 0;
 
     for (let product of products){
-      const productFound = await db.collection('products').findOne({ _id: new ObjectId (product._id) });
-      if (!productFound) return res.status(404).send(`Produto "${product._id}" não encontrado`);
+      const productFound = await db.collection('products').findOne({ _id: new ObjectId (product.productId) });
+      if (!productFound) return res.status(404).send(`Produto "${product.productId}" não encontrado`);
       totalPrice += product.price * product.quantity;
     }
    
