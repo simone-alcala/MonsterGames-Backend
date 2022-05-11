@@ -14,6 +14,7 @@ export async function validateSignIn (req,res,next){
 
     res.locals.name = user.name;
     res.locals.userId = user._id;
+    res.locals.avatar = user.avatar;
     next();
 
   }catch(e){
