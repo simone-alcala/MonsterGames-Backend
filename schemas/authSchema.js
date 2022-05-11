@@ -21,7 +21,7 @@ export function validateUser (req,res,next) {
     neighborhood:   joi.string().trim().required(),
     zipCode:        joi.string().length(9).trim().required(),
     city:           joi.string().trim().required(),
-    state:          joi.string().length(2).trim().required(),//TODO: add
+    state:          joi.string().length(2).trim().required(),//TODO: add states as only possible values (RJ, SP, MG...)
     password:       joi.string().required(),
     repeat_password: joi.ref('password')
   }) .with('password', 'repeat_password');;
@@ -32,5 +32,21 @@ export function validateUser (req,res,next) {
     return res.status(422).send(validate.error.details.map(detail => detail.message));
 
   next();
+}
 
+export function schemaSignIn(req,res,next){
+  const {email, password} = req.body;
+
+  const schema = joi.object({
+    email: joi.string().trim().required(),
+    password: joi.string().required()
+  })
+
+  const { error, value } = schema.validate({email, password}, options);
+
+  if(error){
+    return res.status(422).send(error.details.map(detail => detail.message));
+  }
+
+  next();
 }
