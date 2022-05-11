@@ -14,6 +14,7 @@ export function validateUser (req,res,next) {
   const schema    = joi.object({
     name:           joi.string().trim().required(),
     email:          joi.string().trim().email().required(),
+    avatar:         joi.string().pattern(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/),
     cpf:            joi.string().length(14).trim().required(),
     address:        joi.string().trim().required(),
     addressNumber:  joi.string().trim().required(),
