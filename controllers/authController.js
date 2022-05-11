@@ -14,7 +14,8 @@ export async function signUp (req,res){
 
     await db.collection('users').insertOne({
       name: newUser.name,
-      email: newUser.email,        
+      email: newUser.email,
+      avatar: newUser.avatar,        
       cpf: newUser.cpf,      
       address: newUser.address,
       addressNumber: newUser.addressNumber,
