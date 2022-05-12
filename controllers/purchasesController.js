@@ -24,12 +24,9 @@ export async function addPurchase (req,res) {
       date:       dayjs().format('DD/MM/YYYY')
     });
 
-    products.map((product) => {
-      const getGame = db.collection('products').findOne({_id: ObjectId(product.productId)});
-      getGame.then((answer)=>{
-        const updateGame = db.collection('products').updateOne({_id: ObjectId(product.productId)}, {$set: {stock: answer.stock - product.quantity}});
-        updateGame.then((response) => console.log(response));
-      })      
+    products.map(async (product) => {
+      const selectedProduct = await db.collection('products').findOne({_id: ObjectId(product.productId)});
+      await db.collection('products').updateOne({_id: ObjectId(product.productId)}, {$set: {stock: selectedProduct.stock - product.quantity}});
     })
 
     res.status(201).send(newPurchase);
