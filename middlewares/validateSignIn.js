@@ -12,6 +12,7 @@ export async function validateSignIn (req,res,next){
       return res.status(404).send("Usuário não encontrado");
     }
 
+    res.locals.avatar = user.avatar;
     res.locals.name = user.name;
     res.locals.userId = user._id;
     res.locals.avatar = user.avatar;
