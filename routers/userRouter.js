@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
 import { getUser } from '../controllers/userController.js';
-import { validateUser } from '../middlewares/validateUser.js';
+import { validateSession } from '../middlewares/validateSession.js';
 
 const userRouter = Router();
 
-userRouter.get('/user/:token', validateUser, getUser);
+userRouter.get('/user', validateSession, getUser);
 
 export default userRouter;
