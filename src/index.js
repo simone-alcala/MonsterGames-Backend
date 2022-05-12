@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
+import userRouter from '../routers/userRouter.js';
 import authRouter from '../routers/authRouter.js';
 import productsRouter from '../routers/productsRouter.js'
 import checkoutRouter from '../routers/checkoutRouter.js'
@@ -13,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(json());
 
+app.use(userRouter);
 app.use(authRouter);
 app.use(productsRouter);
 app.use(checkoutRouter);
