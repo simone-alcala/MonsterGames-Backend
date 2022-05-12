@@ -33,11 +33,19 @@ export async function getProducts(req,res){
   try {
 
     if(genre){
-      const filteredProducts = await db.collection('products').find({genre}).toArray();
+      let filteredProducts = await db.collection('products').find({genre}).toArray();
+
+      filteredProducts = filteredProducts.filter((product) => {
+        return product.stock!==0
+      })
       return res.status(200).send(filteredProducts);
     }
 
-    const productsArray = await db.collection('products').find().toArray();
+    let productsArray = await db.collection('products').find().toArray();
+    
+    productsArray = productsArray.filter((product) => {
+      return product.stock!==0
+    })
 
     return res.status(200).send(productsArray);
 

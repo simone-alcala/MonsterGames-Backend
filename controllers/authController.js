@@ -14,7 +14,8 @@ export async function signUp (req,res){
 
     await db.collection('users').insertOne({
       name: newUser.name,
-      email: newUser.email,        
+      email: newUser.email,
+      avatar: newUser.avatar,        
       cpf: newUser.cpf,      
       address: newUser.address,
       addressNumber: newUser.addressNumber,
@@ -36,13 +37,13 @@ export async function signUp (req,res){
 
 export async function signIn(req,res){
   const {password} = req.body;
-  const {userId, name} = res.locals;
+  const {userId, name, avatar} = res.locals;
 
   const token = jwt.sign(password, process.env.JWT_KEY);
 
   try {
     await db.collection('sessions').insertOne({userId, token})
-    return res.status(200).send({token, name})
+    return res.status(200).send({token, name, avatar})
   } catch (e) {
     console.log(e);
     return res.sendStatus(500);
