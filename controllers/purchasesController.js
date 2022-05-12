@@ -5,6 +5,8 @@ import db from './../db.js';
 
 export async function addPurchase (req,res) {
   
+  const {products} = req.body;
+  
   try {
 
     const user  = res.locals.registeredUser;
@@ -21,6 +23,14 @@ export async function addPurchase (req,res) {
       userEmail:  user.email,
       date:       dayjs().format('DD/MM/YYYY')
     });
+
+    products.map((product) => {
+      const getGame = db.collection('products').findOne({_id: ObjectId(product.productId)});
+      getGame.then((answer)=>{
+        const updateGame = db.collection('products').updateOne({_id: ObjectId(product.productId)}, {$set: {stock: answer.stock - product.quantity}});
+        updateGame.then((response) => console.log(response));
+      })      
+    })
 
     res.status(201).send(newPurchase);
 
