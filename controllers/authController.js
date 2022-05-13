@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken';
 
 import db from './../db.js';
 
+dotenv.config();
+
 export async function signUp (req,res){
   
   try {
@@ -39,10 +41,12 @@ export async function signIn(req,res){
   const {password} = req.body;
   const {userId, name, avatar} = res.locals;
 
-  const token = jwt.sign(password, process.env.JWT_KEY);
+  //const token = jwt.sign(password, process.env.JWT_KEY);
 
   try {
-    await db.collection('sessions').insertOne({userId, token})
+    //await db.collection('sessions').insertOne({userId, token})
+    //return res.status(200).send({token, name, avatar})
+    const token = res.locals.token;
     return res.status(200).send({token, name, avatar})
   } catch (e) {
     console.log(e);

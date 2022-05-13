@@ -6,7 +6,7 @@ export async function validateSignUp (req,res,next) {
 
     const newUser = req.body;   
     const alreadyRegistered = await db.collection('users').findOne({ email: newUser.email });
-    if (alreadyRegistered) return res.send(`Email "${newUser.email}" already registered`);
+    if (alreadyRegistered) return res.status(409).send(`Email "${newUser.email}" já cadastrado`);
     
     next();   
     
