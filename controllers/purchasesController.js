@@ -20,6 +20,7 @@ export async function addPurchase (req,res) {
       paymentInfo,
       sendTo,
       totalPrice: total,
+      userName:   user.name,
       userId:     user._id,
       userEmail:  user.email,
       date:       dayjs().format('DD/MM/YYYY')

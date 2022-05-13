@@ -47,28 +47,95 @@ export async function sendConfirmationEmail(purchaseId) {
 function createHtml(purchaseInfo) {
   let html = '';
 
-  html = `
+  html += `
   
-  <!DOCTYPE html>
-  <html lang="pt-br">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>MonsterGames</title>
-    </head>
-    <body>
-      <b>Olá, seu lindo nome</b>
-      </br>
-      <b>Seu pedido ${purchaseInfo._id} foi confirmado!</b>
-      </br>
-      <b>Data da compra: ${purchaseInfo.date}</b>
-      </br>
-      <b>Previsão de entrega: 7 dias úteis a partir da confirmação do pedido</b>
+    <!DOCTYPE html>
+    <html lang="pt-br">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>MonsterGames</title>
+      </head>
+      <body>
+        <div>
 
-    </body>
-  </html>
-  
-  `
+          <table id="header" width="100%" cellspacing="0" cellpadding="3" >
+            <tbody>
+              <tr>
+                <td >
+                  <strong>Olá, ${purchaseInfo.userName}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td >
+                  <strong>Seu pedido "${purchaseInfo._id}" foi confirmado!</strong>
+                </td>
+              </tr>
+              <tr>
+                <td >
+                  Data da compra: ${purchaseInfo.date}
+                </td>
+              </tr>
+              <tr>
+                <td >
+                  <strong>Previsão de entrega: 7 dias úteis a partir da confirmação do pedido</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
+          <br/> <strong>Itens do pedido:</strong> <br/> 
+
+          <table id="items" width="100%" cellspacing="0" cellpadding="10" >
+            <tbody>
+    `;
+
+    purchaseInfo.products.forEach(game => {
+
+      html += `
+
+        <tr>
+          <td width="110">  
+            <img src=${game.image} alt=${game.name} width="90px" height="100px"/>
+          </td>
+          <td>
+            <span>${game.name}</span>  <br/>   
+            <span>Qtd.: ${game.quantity}</span>   <br/> 
+            <strong>R$ ${game.price.toFixed(2).replace('.',',')}</strong> cada
+          </td>
+        </tr>
+      `
+    });
+
+
+    html += `
+            </tbody>
+          </table>
+
+          <br/> 
+
+          <table id="footer" width="100%" cellspacing="0" cellpadding="10" >
+            <tbody>
+
+              <tr>
+                <td width="100%">  
+                <strong>Total do pedido: R$ ${purchaseInfo.totalPrice.toFixed(2).replace('.',',')}</strong>
+                </td>
+              </tr>  
+
+            </tbody>
+          </table>
+
+          <br/>  
+
+          <strong>Agradecemos a preferência :)</strong>
+          <br/> 
+          <strong>Equipe Monster Games</strong>
+          
+        </div>
+
+      </body>
+    </html>
+    `
   return html;  
 }
