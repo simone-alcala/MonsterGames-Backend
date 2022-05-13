@@ -1,6 +1,10 @@
 import { ObjectId } from 'mongodb';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 import db from './../db.js';
+
+dotenv.config();
 
 export async function validateSession (req,res,next) {
 
@@ -9,8 +13,11 @@ export async function validateSession (req,res,next) {
     const { authorization } = req.headers;
     const token = authorization?.replace('Bearer', '').trim();
     if (!token) return res.status(401).send('Token inválido');
+
+    const infoSession = jwt.verify(token, process.env.JWT_KEY);
   
-    const session = await db.collection('sessions').findOne({ token });  
+    const session = await db.collection('sessions').findOne({ _id: new ObjectId(infoSession.sessionId)});  
+    
     if (!session) return res.status(404).send('Sessão inválida');  
     
     const registeredUser = await db.collection('users').findOne({_id: new ObjectId (session.userId)});

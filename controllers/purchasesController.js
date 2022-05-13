@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { ObjectId } from 'mongodb';
 
 import db from './../db.js';
+import { sendConfirmationEmail } from '../utils/sendConfirmationEmail.js';
 
 export async function addPurchase (req,res) {
   
@@ -28,6 +29,8 @@ export async function addPurchase (req,res) {
       const selectedProduct = await db.collection('products').findOne({_id: ObjectId(product.productId)});
       await db.collection('products').updateOne({_id: ObjectId(product.productId)}, {$set: {stock: selectedProduct.stock - product.quantity}});
     })
+
+    sendConfirmationEmail(newPurchase.insertedId);
 
     res.status(201).send(newPurchase);
 
