@@ -14,8 +14,8 @@ export async function sendConfirmationEmail(purchaseId) {
   //server info
   const EMAIL     = process.env.EMAIL;
   const PASSWORD  = process.env.EMAIL_PWD;
-  const HOST      = 'smtp.googlemail.com';
-  const PORT      = 465;
+  const HOST      = process.env.EMAIL_HOST;
+  const PORT      = process.env.EMAIL_PORT;
   
   //email info
   const FROM    = `"MonsterGames ${process.env.EMAIL}"`;
