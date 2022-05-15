@@ -46,6 +46,13 @@ export async function getPurchases (req,res) {
   try {
     const user  = res.locals.registeredUser;
     const purchases = await db.collection('purchases').find({userId: new ObjectId(user._id)}).toArray();
+    
+    purchases.map(purchase => {
+      purchase.paymentInfo.cardNumber = purchase.paymentInfo.cardNumber.slice(-4);
+      delete purchase.paymentInfo.cvv;
+      delete purchase.paymentInfo.cpf;
+    });
+
     return res.status(200).send(purchases.reverse());
   } catch(e) {
     console.log(e);
@@ -55,6 +62,12 @@ export async function getPurchases (req,res) {
 
 export async function getPurchaseById (req,res) {
   try {
+    const purchase = res.locals.purchase;
+
+    purchase.paymentInfo.cardNumber = purchase.paymentInfo.cardNumber.slice(-4);
+    delete purchase.paymentInfo.cvv;
+    delete purchase.paymentInfo.cpf;
+
     return res.status(200).send(res.locals.purchase);
   } catch(e) {
     console.log(e);
