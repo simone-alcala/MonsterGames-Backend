@@ -33,7 +33,10 @@ export async function getProducts(req,res){
   try {
 
     if(genre){
-      let filteredProducts = await db.collection('products').find({genre}).toArray();
+      let filteredProducts = await db.collection('products').find({ $or: [
+        { genre: { '$regex' : genre , '$options' :'i' } },
+        { name:  { '$regex' : genre , '$options' :'i' } }
+      ]}).toArray();
 
       filteredProducts = filteredProducts.filter((product) => {
         return product.stock!==0
