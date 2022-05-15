@@ -31,6 +31,16 @@ export async function addPurchase (req,res) {
       await db.collection('products').updateOne({_id: ObjectId(product.productId)}, {$set: {stock: selectedProduct.stock - product.quantity}});
     })
 
+    await db.collection('users').updateOne({_id: ObjectId(user._id)}, {$set: { 
+      address: sendTo.address,
+      addressNumber: sendTo.addressNumber,
+      complement: sendTo.complement,
+      neighborhood: sendTo.neighborhood,
+      zipCode: sendTo.zipCode,
+      city: sendTo.city,
+      state: sendTo.state
+    }});
+
     sendConfirmationEmail(newPurchase.insertedId);
 
     res.status(201).send(newPurchase);
